@@ -1,0 +1,98 @@
+﻿using Api.Enums;
+using Api.Extensions;
+using Application.Abstractions;
+using Application.DTOs.Incoming;
+using Domain.RequestParameters;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Api.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AppointmentsController : ControllerBase
+    {
+        private readonly IAppointmentsService _appointmentsService;
+        private readonly IValidator<AppointmentIncomingDto> _appointmentIncomingDtoValidator;
+        private readonly IValidator<RescheduleAppointmentIncomingDto> _rescheduleAppointmentIncomingDtoValidator;
+        private readonly IValidator<AppointmentParameters> _appointmentParametersValidator;
+        private readonly IValidator<ScheduleParameters> _scheduleParametersValidator;
+
+        public AppointmentsController(IAppointmentsService appointmentsService, 
+            IValidator<AppointmentIncomingDto> appointmentIncomingDtoValidator,
+            IValidator<RescheduleAppointmentIncomingDto> rescheduleAppointmentIncomingDtoValidator,
+            IValidator<AppointmentParameters> appointmentParametersValidator,
+            IValidator<ScheduleParameters> scheduleParametersValidator)
+        {
+            _appointmentsService = appointmentsService;
+            _appointmentIncomingDtoValidator = appointmentIncomingDtoValidator;
+            _rescheduleAppointmentIncomingDtoValidator = rescheduleAppointmentIncomingDtoValidator;
+            _appointmentParametersValidator = appointmentParametersValidator;
+            _scheduleParametersValidator = scheduleParametersValidator;
+        }
+
+        [HttpPost]
+        //[Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
+        public async Task<IActionResult> CreateAppointmentAsync([FromBody] AppointmentIncomingDto incomingDto) 
+        {
+            var validationResult = await _appointmentIncomingDtoValidator.ValidateAsync(incomingDto);
+            validationResult.HandleValidationResult();
+            var entityId = await _appointmentsService.CreateAsync(incomingDto);
+            return Created("", entityId);
+        }
+
+        [HttpPost("{id}/approve")]
+        public async Task<IActionResult> ApproveAppointmentAsync(Guid id)
+        {
+            await _appointmentsService.ApproveAsync(id);
+            return NoContent();
+        }
+
+        [HttpGet("history")]
+        //[Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Doctor)}")]
+        public async Task<IActionResult> GetAppointmentsAsync([FromQuery] Guid patientId)
+        {
+            var entities = await _appointmentsService.GetAsync(patientId);
+            return Ok(entities);
+        }
+
+        [HttpGet("schedule")]
+        //[Authorize(Roles = $"{nameof(UserRole.Doctor)}")]
+        public async Task<IActionResult> GetAppointmentsScheduleByDoctorAsync([FromQuery] ScheduleParameters parameters)
+        {
+            var validationResult = await _scheduleParametersValidator.ValidateAsync(parameters);
+            validationResult.HandleValidationResult();
+            var entities = await _appointmentsService.GetScheduleByDoctorAsync(parameters);
+            return Ok(entities);
+        }
+
+        [HttpGet("list")]
+        //[Authorize(Roles = $"{nameof(UserRole.Receptionist)}")]
+        public async Task<IActionResult> GetAppointmentsByReceptionistAsync([FromQuery] AppointmentParameters parameters)
+        {
+            var validationResult = await _appointmentParametersValidator.ValidateAsync(parameters);
+            validationResult.HandleValidationResult();
+            var entities = await _appointmentsService.GetByReceptionistAsync(parameters);
+            return Ok(entities);
+        }
+
+        [HttpPut("{id}/reschedule")]
+        //[Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
+        public async Task<IActionResult> RescheduleAppointmentAsync(Guid id, [FromBody] RescheduleAppointmentIncomingDto incomingDto)
+        {
+            var validationResult = await _rescheduleAppointmentIncomingDtoValidator.ValidateAsync(incomingDto);
+            validationResult.HandleValidationResult();
+            await _appointmentsService.RescheduleAsync(id, incomingDto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        //[Authorize(Roles = $"{nameof(UserRole.Doctor)}")]
+        public async Task<IActionResult> CancelAppointmentAsync(Guid id)
+        {
+            await _appointmentsService.DeleteByIdAsync(id);
+            return NoContent();
+        }
+    }
+}
