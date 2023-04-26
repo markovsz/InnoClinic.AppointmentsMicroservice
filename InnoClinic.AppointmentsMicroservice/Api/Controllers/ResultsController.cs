@@ -1,8 +1,10 @@
-﻿using Api.Extensions;
+﻿using Api.Enums;
+using Api.Extensions;
 using Application.Abstractions;
 using Application.DTOs.Incoming;
 using Application.Validators;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -24,8 +26,8 @@ namespace Api.Controllers
             _updateResultIncomingDtoValidator = updateResultIncomingDtoValidator;
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Doctor)}")]
         [HttpPost]
-        //[Authorize(Roles = "Doctor")]
         public async Task<ActionResult> CreateResultAsync([FromBody] ResultIncomingDto incomingDto) 
         {
             var validationResult = await _resultIncomingDtoValidator.ValidateAsync(incomingDto);
@@ -34,16 +36,16 @@ namespace Api.Controllers
             return Created("", resultId);
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Patient)}")]
         [HttpGet("{id}")]
-        //[Authorize(Roles = "Patient")]
         public async Task<ActionResult> GetResultByIdAsync(Guid id)
         {
             var result = await _resultsService.GetByIdAsync(id);
             return Ok(result);
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Doctor)}")]
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Doctor")]
         public async Task<ActionResult> UpdateResultAsync(Guid id, [FromBody] UpdateResultIncomingDto incomingDto)
         {
             var validationResult = await _updateResultIncomingDtoValidator.ValidateAsync(incomingDto);
@@ -52,6 +54,7 @@ namespace Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Patient)}")]
         [HttpGet("{id}/pdf")]
         public async Task<IActionResult> GetResultAsPdfAsync(Guid id)
         {
