@@ -31,6 +31,7 @@ public class AppointmentsRepository : BaseRepository<Appointment>, IAppointments
 
     public async Task<IEnumerable<Appointment>> GetScheduleByDoctorAsync(ScheduleParameters parameters) =>
         await _context.Appointments
+        .Include(e => e.Result)
         .ScheduleFilter(parameters)
         .OrderBy(e => e.Time)
         .ToListAsync();
