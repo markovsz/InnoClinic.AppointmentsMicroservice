@@ -10,4 +10,10 @@ public class ResultsRepository : BaseRepository<Result>, IResultsRepository
 		: base(context)
 	{
 	}
+
+    public override async Task<Result> GetByIdAsync(Guid id) =>
+        await _context.Results
+            .Include(e => e.Appointment)
+            .Where(e => e.Id.Equals(id))
+            .FirstOrDefaultAsync();
 }

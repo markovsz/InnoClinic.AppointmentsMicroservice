@@ -19,7 +19,7 @@ public abstract class BaseRepository<TEntity> where TEntity : BaseEntity
         await _context.Set<TEntity>()
             .ToListAsync();
 
-    public async Task<TEntity> GetByIdAsync(Guid id) =>
+    public virtual async Task<TEntity> GetByIdAsync(Guid id) =>
         await _context.Set<TEntity>()
             .Where(e => e.Id.Equals(id))
             .FirstOrDefaultAsync();
