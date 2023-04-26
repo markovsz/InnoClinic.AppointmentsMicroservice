@@ -4,6 +4,7 @@ public class Appointment : BaseEntity
 {
     public Guid PatientId { get; set; }
     public Guid DoctorId { get; set; }
+    public Guid SpecializationId { get; set; }
     public Guid ServiceId { get; set; }
     public DateTime Date { get; set; }
     public TimeSpan Time { get; set; }
