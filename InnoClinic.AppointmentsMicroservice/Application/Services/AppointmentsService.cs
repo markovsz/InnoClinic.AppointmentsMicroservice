@@ -1,11 +1,12 @@
 ﻿using Application.Abstractions;
-using Application.DTOs.Incoming;
-using Application.DTOs.Outgoing;
 using AutoMapper;
 using Domain.Abstractions;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.RequestParameters;
+using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
+using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
+using InnoClinic.SharedModels.Messages;
 
 namespace Application.Services;
 

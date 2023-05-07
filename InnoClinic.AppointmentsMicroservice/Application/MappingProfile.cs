@@ -2,6 +2,8 @@
 using Application.DTOs.Outgoing;
 using AutoMapper;
 using Domain.Entities;
+using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
+using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
 
 namespace Application;
 

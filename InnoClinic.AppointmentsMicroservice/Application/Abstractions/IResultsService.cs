@@ -1,5 +1,5 @@
-﻿using Application.DTOs.Incoming;
-using Application.DTOs.Outgoing;
+﻿using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
+using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
 
 namespace Application.Abstractions;
 
