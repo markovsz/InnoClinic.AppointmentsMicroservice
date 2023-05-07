@@ -85,4 +85,16 @@ public class AppointmentsService : IAppointmentsService
         _repositoryManager.Appointments.Update(entity);
         await _repositoryManager.SaveChangesAsync();
     }
+
+    public async Task UpdateDoctorProfileAsync(DoctorProfileUpdatedMessage message)
+    {
+        await _repositoryManager.Appointments.UpdateDoctorProfileAsync(message.Id, message.DoctorFirstName, message.DoctorLastName, message.DoctorMiddleName);
+        await _repositoryManager.SaveChangesAsync();
+    }
+
+    public async Task UpdateServiceNameAsync(ServiceUpdatedMessage message)
+    {
+        await _repositoryManager.Appointments.UpdateServiceNameAsync(message.Id, message.Name);
+        await _repositoryManager.SaveChangesAsync();
+    }
 }

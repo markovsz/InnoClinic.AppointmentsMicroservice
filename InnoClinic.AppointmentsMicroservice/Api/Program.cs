@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureDb(builder.Configuration);
 builder.Services.ConfigureRepositories();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.ConfigureMassTransit(builder.Configuration);
 builder.Services.ConfigureServices();
 builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.ConfigureValidators();
