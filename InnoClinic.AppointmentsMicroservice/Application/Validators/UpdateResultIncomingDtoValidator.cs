@@ -1,6 +1,5 @@
-﻿using Application.DTOs.Incoming;
-using Application.DTOs.Outgoing;
-using FluentValidation;
+﻿using FluentValidation;
+using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
 
 namespace Application.Validators;
 

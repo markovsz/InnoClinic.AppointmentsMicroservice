@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Outgoing;
+﻿using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
 
 namespace Application.Abstractions;
 

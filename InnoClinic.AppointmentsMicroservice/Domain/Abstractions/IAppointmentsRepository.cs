@@ -13,5 +13,7 @@ public interface IAppointmentsRepository
     Task<bool> HasAnotherResult(Guid appointmentId);
     Task<bool> Exists(Guid id);
     void Update(Appointment entity);
+    Task UpdateServiceNameAsync(Guid serviceId, string serviceName);
+    Task UpdateDoctorProfileAsync(Guid doctorId, string doctorFirstName, string doctorLastName, string doctorMiddleName);
     void Delete(Appointment entity);
 }

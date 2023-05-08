@@ -1,8 +1,7 @@
 ﻿using Application.Abstractions;
-using Application.DTOs.Outgoing;
+using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
 using iText.Kernel.Colors;
 using iText.Kernel.Pdf;
-using iText.Kernel.Pdf.Action;
 using iText.Kernel.Pdf.Canvas.Draw;
 using iText.Layout;
 using iText.Layout.Element;

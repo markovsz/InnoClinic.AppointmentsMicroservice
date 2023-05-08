@@ -1,9 +1,9 @@
 ﻿using Api.Enums;
 using Api.Extensions;
 using Application.Abstractions;
-using Application.DTOs.Incoming;
 using Domain.RequestParameters;
 using FluentValidation;
+using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,8 +32,8 @@ namespace Api.Controllers
             _scheduleParametersValidator = scheduleParametersValidator;
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
         [HttpPost]
-        //[Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
         public async Task<IActionResult> CreateAppointmentAsync([FromBody] AppointmentIncomingDto incomingDto) 
         {
             var validationResult = await _appointmentIncomingDtoValidator.ValidateAsync(incomingDto);
@@ -42,6 +42,7 @@ namespace Api.Controllers
             return Created("", entityId);
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Receptionist)}")]
         [HttpPost("{id}/approve")]
         public async Task<IActionResult> ApproveAppointmentAsync(Guid id)
         {
@@ -49,16 +50,16 @@ namespace Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Doctor)}")]
         [HttpGet("history")]
-        //[Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Doctor)}")]
         public async Task<IActionResult> GetAppointmentsAsync([FromQuery] Guid patientId)
         {
             var entities = await _appointmentsService.GetAsync(patientId);
             return Ok(entities);
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Doctor)}")]
         [HttpGet("schedule")]
-        //[Authorize(Roles = $"{nameof(UserRole.Doctor)}")]
         public async Task<IActionResult> GetAppointmentsScheduleByDoctorAsync([FromQuery] ScheduleParameters parameters)
         {
             var validationResult = await _scheduleParametersValidator.ValidateAsync(parameters);
@@ -67,8 +68,8 @@ namespace Api.Controllers
             return Ok(entities);
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Receptionist)}")]
         [HttpGet("list")]
-        //[Authorize(Roles = $"{nameof(UserRole.Receptionist)}")]
         public async Task<IActionResult> GetAppointmentsByReceptionistAsync([FromQuery] AppointmentParameters parameters)
         {
             var validationResult = await _appointmentParametersValidator.ValidateAsync(parameters);
@@ -77,8 +78,8 @@ namespace Api.Controllers
             return Ok(entities);
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
         [HttpPut("{id}/reschedule")]
-        //[Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
         public async Task<IActionResult> RescheduleAppointmentAsync(Guid id, [FromBody] RescheduleAppointmentIncomingDto incomingDto)
         {
             var validationResult = await _rescheduleAppointmentIncomingDtoValidator.ValidateAsync(incomingDto);
@@ -87,8 +88,8 @@ namespace Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Receptionist)}")]
         [HttpDelete("{id}")]
-        //[Authorize(Roles = $"{nameof(UserRole.Doctor)}")]
         public async Task<IActionResult> CancelAppointmentAsync(Guid id)
         {
             await _appointmentsService.DeleteByIdAsync(id);

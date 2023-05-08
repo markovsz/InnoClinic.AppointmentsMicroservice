@@ -1,11 +1,12 @@
 ﻿using Application.Abstractions;
-using Application.DTOs.Incoming;
-using Application.DTOs.Outgoing;
 using AutoMapper;
 using Domain.Abstractions;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.RequestParameters;
+using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
+using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
+using InnoClinic.SharedModels.Messages;
 
 namespace Application.Services;
 
@@ -82,6 +83,18 @@ public class AppointmentsService : IAppointmentsService
         entity.DoctorLastName = incomingDto.DoctorLastName;
         entity.DoctorMiddleName = incomingDto.DoctorMiddleName;
         _repositoryManager.Appointments.Update(entity);
+        await _repositoryManager.SaveChangesAsync();
+    }
+
+    public async Task UpdateDoctorProfileAsync(DoctorProfileUpdatedMessage message)
+    {
+        await _repositoryManager.Appointments.UpdateDoctorProfileAsync(message.Id, message.DoctorFirstName, message.DoctorLastName, message.DoctorMiddleName);
+        await _repositoryManager.SaveChangesAsync();
+    }
+
+    public async Task UpdateServiceNameAsync(ServiceUpdatedMessage message)
+    {
+        await _repositoryManager.Appointments.UpdateServiceNameAsync(message.Id, message.Name);
         await _repositoryManager.SaveChangesAsync();
     }
 }

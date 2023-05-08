@@ -1,7 +1,7 @@
-﻿using Application.DTOs.Incoming;
-using Application.DTOs.Outgoing;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Entities;
+using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
+using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
 
 namespace Application;
 
@@ -12,7 +12,9 @@ public class MappingProfile : Profile
         CreateMap<AppointmentIncomingDto, Appointment>();
         CreateMap<Appointment, PatientAppointmentsOutgoingDto>();
         CreateMap<Appointment, AppointmentByReceptionistOutgoingDto>();
-        CreateMap<Appointment, AppointmentScheduleByDoctorOutgoingDto>();
+        CreateMap<Appointment, AppointmentScheduleByDoctorOutgoingDto>()
+            .ForMember(e => e.ResultId, opt => opt.MapFrom(src => src.Result.Id));
+        CreateMap<Appointment, AppointmentForResultOutgoingDto>();
         CreateMap<ResultIncomingDto, Result>();
         CreateMap<Result, ResultOutgoingDto>();
     }
