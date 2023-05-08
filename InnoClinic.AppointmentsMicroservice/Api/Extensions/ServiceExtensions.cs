@@ -1,10 +1,12 @@
 ﻿using Application;
 using Application.Abstractions;
+using Application.Consumers;
 using Application.Services;
 using Domain.Abstractions;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -94,6 +96,27 @@ namespace Api.Extensions
         public static void ConfigureValidators(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
+        }
+
+        public static void ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMassTransit(e =>
+            {
+                e.AddConsumer<ServiceUpdatedConsumer>();
+                e.AddConsumer<DoctorProfileUpdatedConsumer>();
+                e.UsingRabbitMq((context, cfg) => {
+                    cfg.Host(new Uri(configuration.GetSection("RabbitMq:ConnectionString").Value ??
+                                 throw new NotImplementedException()));
+                    cfg.ReceiveEndpoint("service-updated-event", e =>
+                    {
+                        e.ConfigureConsumer<ServiceUpdatedConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("doctor-profile-updated-event", e =>
+                    {
+                        e.ConfigureConsumer<DoctorProfileUpdatedConsumer>(context);
+                    });
+                });
+            });
         }
     }
 }
