@@ -10,7 +10,8 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<AppointmentIncomingDto, Appointment>();
-        CreateMap<Appointment, PatientAppointmentsOutgoingDto>();
+        CreateMap<Appointment, PatientAppointmentsOutgoingDto>()
+            .ForMember(e => e.ResultId, opt => opt.MapFrom(src => src.Result.Id));
         CreateMap<Appointment, AppointmentByReceptionistOutgoingDto>();
         CreateMap<Appointment, AppointmentScheduleByDoctorOutgoingDto>()
             .ForMember(e => e.ResultId, opt => opt.MapFrom(src => src.Result.Id));
