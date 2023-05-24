@@ -15,6 +15,7 @@ public class AppointmentsRepository : BaseRepository<Appointment>, IAppointments
 
     public async Task<IEnumerable<Appointment>> GetAsync(Guid patientId) =>
         await _context.Appointments
+        .Include(e => e.Result)
         .OrderByDescending(e => e.Time)
         .OrderByDescending(e => e.Date)
         .Where(e => e.PatientId.Equals(patientId))
