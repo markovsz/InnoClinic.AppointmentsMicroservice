@@ -51,8 +51,8 @@ namespace Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Doctor)}")]
-        [HttpGet("history")]
-        public async Task<IActionResult> GetAppointmentsAsync([FromQuery] Guid patientId)
+        [HttpGet("patient/{patientId}/history")]
+        public async Task<IActionResult> GetAppointmentsAsync(Guid patientId)
         {
             var entities = await _appointmentsService.GetAsync(patientId);
             return Ok(entities);
