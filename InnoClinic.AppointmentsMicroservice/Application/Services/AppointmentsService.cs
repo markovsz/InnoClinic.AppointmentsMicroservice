@@ -31,9 +31,9 @@ public class AppointmentsService : IAppointmentsService
         await _repositoryManager.SaveChangesAsync();
     }
 
-    public async Task<Guid> CreateAsync(AppointmentIncomingDto incomngDto)
+    public async Task<Guid> CreateAsync(AppointmentIncomingDto incomingDto)
     {
-        var entity = _mapper.Map<Appointment>(incomngDto);
+        var entity = _mapper.Map<Appointment>(incomingDto);
         entity.Id = Guid.NewGuid();
         entity.IsApproved = false;
         await _repositoryManager.Appointments.CreateAsync(entity);
