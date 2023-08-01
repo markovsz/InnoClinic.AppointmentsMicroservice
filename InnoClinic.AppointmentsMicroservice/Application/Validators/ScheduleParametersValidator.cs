@@ -1,5 +1,5 @@
-﻿using Domain.RequestParameters;
-using FluentValidation;
+﻿using FluentValidation;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 
 namespace Application.Validators;
 

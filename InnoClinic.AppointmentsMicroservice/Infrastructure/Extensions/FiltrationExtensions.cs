@@ -35,13 +35,12 @@ public static class FiltrationExtensions
 
     public static IQueryable<Appointment> ScheduleFilter(this IQueryable<Appointment> entities, ScheduleParameters parameters)
     {
-        entities = entities.Where(e => e.PatientId.Equals(parameters.PatientId));
-
-        if (parameters.Day.HasValue)
-            entities = entities.Where(e => e.Date.Day.Equals(parameters.Day));
-
-        if (parameters.Month.HasValue)
-            entities = entities.Where(e => e.Date.Month.Equals(parameters.Month));
+        entities = entities.Where(e => e.DateTime.Day.Equals(parameters.Day));
+        entities = entities.Where(e => e.DateTime.Month.Equals(parameters.Month));
+        entities = entities.Where(e => e.DateTime.Year.Equals(parameters.Year));
+        entities = entities.Where(e => e.DoctorId.Equals(parameters.DoctorId));
+        return entities;
+    }
 
     public static IQueryable<Appointment> TimeSlotsFilter(this IQueryable<Appointment> entities, TimeSlotParameters parameters)
     {
