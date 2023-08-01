@@ -43,7 +43,7 @@ namespace Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)}")]
-        [HttpPost("{id}/approve")]
+        [HttpPost("appointment/{id}/approve")]
         public async Task<IActionResult> ApproveAppointmentAsync(Guid id)
         {
             await _appointmentsService.ApproveAsync(id);
@@ -97,7 +97,7 @@ namespace Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)}")]
-        [HttpDelete("{id}")]
+        [HttpDelete("appointment/{id}")]
         public async Task<IActionResult> CancelAppointmentAsync(Guid id)
         {
             await _appointmentsService.DeleteByIdAsync(id);
