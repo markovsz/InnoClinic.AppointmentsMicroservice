@@ -19,8 +19,8 @@ public static class FiltrationExtensions
         if(parameters.DoctorMiddleName is not null)
             entities = entities.Where(e => e.DoctorMiddleName.Contains(parameters.DoctorMiddleName));
 
-        if(parameters.ServiceName is not null)
-            entities = entities.Where(e => e.ServiceName.Contains(parameters.ServiceName));
+        if(parameters.ServiceId is not null)
+            entities = entities.Where(e => e.ServiceId.Equals(parameters.ServiceId));
         
         if(parameters.IsApproved.HasValue)
             entities = entities.Where(e => e.IsApproved.Equals(parameters.IsApproved));
@@ -28,8 +28,6 @@ public static class FiltrationExtensions
         if(parameters.OfficeId.HasValue)
             entities = entities.Where(e => e.OfficeId.Equals(parameters.OfficeId));
 
-        if (parameters.IsApproved.HasValue)
-            entities = entities.Where(e => e.IsApproved.Equals(parameters.IsApproved));
         return entities;
     }
 

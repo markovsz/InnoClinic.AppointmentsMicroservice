@@ -1,5 +1,5 @@
-﻿using Domain.RequestParameters;
-using FluentValidation;
+﻿using FluentValidation;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 
 namespace Application.Validators
 {
@@ -7,7 +7,6 @@ namespace Application.Validators
     {
         public AppointmentParametersValidator()
         {
-            RuleFor(e => e.ServiceName).MinimumLength(1);
             RuleFor(e => e.DoctorFirstName).MinimumLength(1);
             RuleFor(e => e.DoctorLastName).MinimumLength(1);
             RuleFor(e => e.DoctorMiddleName).MinimumLength(1);
