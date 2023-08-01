@@ -67,6 +67,8 @@ public class ResultsService : IResultsService
     public async Task<byte[]> GetAsPdfAsync(Guid id)
     {
         var entity = await GetByIdAsync(id);
+        if (entity is null)
+            throw new EntityNotFoundException();
         var bytes = _pdfGenerationService.Generate(entity);
         return bytes;
     }
