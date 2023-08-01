@@ -3,9 +3,9 @@ using AutoMapper;
 using Domain.Abstractions;
 using Domain.Entities;
 using Domain.Exceptions;
-using Domain.RequestParameters;
 using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
 using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 using InnoClinic.SharedModels.Messages;
 
 namespace Application.Services;
@@ -69,6 +69,17 @@ public class AppointmentsService : IAppointmentsService
         var entities = await _repositoryManager.Appointments.GetScheduleByDoctorAsync(parameters);
         var mappedEntities = _mapper.Map<IEnumerable<AppointmentScheduleByDoctorOutgoingDto>>(entities);
         return mappedEntities;
+    }
+
+    public async Task<IEnumerable<TimeSlotAppointmentOutgoingDto>> GetTimeSlotsAsync(TimeSlotParameters parameters)
+    {
+        var orderedTimeSlotsEnumerable = await _repositoryManager.Appointments.GetTimeSlotsAsync(parameters);
+        var orderedTimeSlots = orderedTimeSlotsEnumerable
+            .ToList();
+
+        var mappedOrderedTimeSlots = _mapper.Map<IEnumerable<TimeSlotAppointmentOutgoingDto>>(orderedTimeSlots);
+
+        return mappedOrderedTimeSlots;
     }
 
     public async Task RescheduleAsync(Guid id, RescheduleAppointmentIncomingDto incomingDto)

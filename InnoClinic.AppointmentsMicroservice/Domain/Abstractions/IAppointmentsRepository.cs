@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.RequestParameters;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 
 namespace Domain.Abstractions;
 
@@ -10,6 +10,7 @@ public interface IAppointmentsRepository
     Task<IEnumerable<Appointment>> GetAsync(Guid patientId);
     Task<IEnumerable<Appointment>> GetByReceptionistAsync(AppointmentParameters parameters);
     Task<IEnumerable<Appointment>> GetScheduleByDoctorAsync(ScheduleParameters parameters);
+    Task<IEnumerable<Appointment>> GetTimeSlotsAsync(TimeSlotParameters parameters);
     Task<bool> HasAnotherResult(Guid appointmentId);
     Task<bool> Exists(Guid id);
     void Update(Appointment entity);

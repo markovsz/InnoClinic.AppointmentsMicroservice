@@ -1,9 +1,9 @@
 ﻿using Api.Enums;
 using Api.Extensions;
 using Application.Abstractions;
-using Domain.RequestParameters;
 using FluentValidation;
 using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -79,7 +79,15 @@ namespace Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
-        [HttpPut("{id}/reschedule")]
+        [HttpGet("orderedTimeSlots")]
+        public async Task<IActionResult> GetTimeSlotsAsync([FromQuery] TimeSlotParameters parameters)
+        {
+            var entities = await _appointmentsService.GetTimeSlotsAsync(parameters);
+            return Ok(entities);
+        }
+
+        [Authorize(Roles = $"{nameof(UserRole.Patient)},{nameof(UserRole.Receptionist)}")]
+        [HttpPut("appointment/{id}/reschedule")]
         public async Task<IActionResult> RescheduleAppointmentAsync(Guid id, [FromBody] RescheduleAppointmentIncomingDto incomingDto)
         {
             var validationResult = await _rescheduleAppointmentIncomingDtoValidator.ValidateAsync(incomingDto);

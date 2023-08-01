@@ -34,7 +34,14 @@ public class AppointmentsRepository : BaseRepository<Appointment>, IAppointments
         await _context.Appointments
         .Include(e => e.Result)
         .ScheduleFilter(parameters)
-        .OrderBy(e => e.Time)
+        .OrderBy(e => e.DateTime)
+        .ToListAsync();
+
+    public async Task<IEnumerable<Appointment>> GetTimeSlotsAsync(TimeSlotParameters parameters) =>
+        await _context.Appointments
+        .Include(e => e.Result)
+        .TimeSlotsFilter(parameters)
+        .OrderBy(e => e.DateTime)
         .ToListAsync();
 
     public async Task<bool> HasAnotherResult(Guid appointmentId) =>

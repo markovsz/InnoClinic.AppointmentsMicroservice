@@ -43,8 +43,12 @@ public static class FiltrationExtensions
         if (parameters.Month.HasValue)
             entities = entities.Where(e => e.Date.Month.Equals(parameters.Month));
 
-        if (parameters.Year.HasValue)
-            entities = entities.Where(e => e.Date.Year.Equals(parameters.Year));
+    public static IQueryable<Appointment> TimeSlotsFilter(this IQueryable<Appointment> entities, TimeSlotParameters parameters)
+    {
+        entities = entities.Where(e => e.DateTime.Day.Equals(parameters.Day));
+        entities = entities.Where(e => e.DateTime.Month.Equals(parameters.Month));
+        entities = entities.Where(e => e.DateTime.Year.Equals(parameters.Year));
+        entities = entities.Where(e => e.DoctorId.Equals(parameters.DoctorId));
         return entities;
     }
 }

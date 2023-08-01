@@ -1,6 +1,6 @@
-﻿using Domain.RequestParameters;
-using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
+﻿using InnoClinic.SharedModels.DTOs.Appointments.Incoming;
 using InnoClinic.SharedModels.DTOs.Appointments.Outgoing;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 using InnoClinic.SharedModels.Messages;
 
 namespace Application.Abstractions;
@@ -12,6 +12,7 @@ public interface IAppointmentsService
     Task<IEnumerable<PatientAppointmentsOutgoingDto>> GetAsync(Guid patientId);
     Task<IEnumerable<AppointmentByReceptionistOutgoingDto>> GetByReceptionistAsync(AppointmentParameters parameters);
     Task<IEnumerable<AppointmentScheduleByDoctorOutgoingDto>> GetScheduleByDoctorAsync(ScheduleParameters parameters);
+    Task<IEnumerable<TimeSlotAppointmentOutgoingDto>> GetTimeSlotsAsync(TimeSlotParameters parameters);
     Task RescheduleAsync(Guid id, RescheduleAppointmentIncomingDto incomingDto);
     Task UpdateServiceNameAsync(ServiceUpdatedMessage message);
     Task UpdateDoctorProfileAsync(DoctorProfileUpdatedMessage message);
