@@ -15,6 +15,7 @@ public class MappingProfile : Profile
         CreateMap<Appointment, AppointmentByReceptionistOutgoingDto>();
         CreateMap<Appointment, AppointmentScheduleByDoctorOutgoingDto>()
             .ForMember(e => e.ResultId, opt => opt.MapFrom(src => src.Result.Id));
+        CreateMap<Appointment, TimeSlotAppointmentOutgoingDto>();
         CreateMap<Appointment, AppointmentForResultOutgoingDto>();
         CreateMap<ResultIncomingDto, Result>();
         CreateMap<Result, ResultOutgoingDto>();
