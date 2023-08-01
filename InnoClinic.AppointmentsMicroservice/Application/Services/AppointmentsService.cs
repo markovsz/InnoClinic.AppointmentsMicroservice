@@ -87,8 +87,7 @@ public class AppointmentsService : IAppointmentsService
         var entity = await _repositoryManager.Appointments.GetByIdAsync(id);
         if (entity is null)
             throw new EntityNotFoundException();
-        entity.Date = incomingDto.Date;
-        entity.Time = incomingDto.Time;
+        entity.DateTime = incomingDto.DateTime;
         entity.DoctorId = incomingDto.DoctorId;
         entity.DoctorFirstName = incomingDto.DoctorFirstName;
         entity.DoctorLastName = incomingDto.DoctorLastName;

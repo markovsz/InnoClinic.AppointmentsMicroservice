@@ -19,8 +19,7 @@ public class RepositoryContext : DbContext
 	{
 		builder.Entity<Appointment>().HasKey(e => e.Id);
 		builder.Entity<Appointment>().Property(e => e.Id);
-		builder.Entity<Appointment>().Property(e => e.Date).HasColumnType("date");
-		builder.Entity<Appointment>().Property(e => e.Time).HasColumnType("time");
+		builder.Entity<Appointment>().Property(e => e.DateTime);
         builder.Entity<Result>().HasKey(e => e.Id);
 		builder.Entity<Result>().Property(e => e.Id);
         builder.Entity<Result>().HasOne(e => e.Appointment).WithOne(e => e.Result);

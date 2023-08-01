@@ -1,7 +1,7 @@
 ﻿using Domain.Abstractions;
 using Domain.Entities;
-using Domain.RequestParameters;
 using Infrastructure.Extensions;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -16,8 +16,7 @@ public class AppointmentsRepository : BaseRepository<Appointment>, IAppointments
     public async Task<IEnumerable<Appointment>> GetAsync(Guid patientId) =>
         await _context.Appointments
         .Include(e => e.Result)
-        .OrderByDescending(e => e.Time)
-        .OrderByDescending(e => e.Date)
+        .OrderByDescending(e => e.DateTime)
         .Where(e => e.PatientId.Equals(patientId))
         .ToListAsync();
 
@@ -27,7 +26,7 @@ public class AppointmentsRepository : BaseRepository<Appointment>, IAppointments
         .OrderBy(e => e.ServiceName)
         .OrderBy(e => e.DoctorFirstName)
         .OrderBy(e => e.DoctorLastName)
-        .OrderBy(e => e.Time)
+        .OrderBy(e => e.DateTime)
         .ToListAsync();
 
     public async Task<IEnumerable<Appointment>> GetScheduleByDoctorAsync(ScheduleParameters parameters) =>

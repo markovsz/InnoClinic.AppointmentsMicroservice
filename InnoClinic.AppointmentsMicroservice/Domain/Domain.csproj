@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="RequestParameters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="InnoClinic.SharedModels">
+      <HintPath>..\..\..\InnoClinic.SharedModels\InnoClinic.SharedModels\bin\Release\net6.0\publish\InnoClinic.SharedModels.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

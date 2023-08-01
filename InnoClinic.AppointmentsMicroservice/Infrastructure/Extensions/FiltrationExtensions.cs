@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.RequestParameters;
+using InnoClinic.SharedModels.DTOs.Appointments.RequestParameters;
 
 namespace Infrastructure.Extensions;
 
@@ -7,8 +7,8 @@ public static class FiltrationExtensions
 {
     public static IQueryable<Appointment> AppointmentsFilter(this IQueryable<Appointment> entities, AppointmentParameters parameters)
     {
-        if(parameters.Date.HasValue)
-            entities = entities.Where(e => e.Date.Equals(parameters.Date));
+        if(parameters.DateTime.HasValue)
+            entities = entities.Where(e => e.DateTime.Equals(parameters.DateTime));
 
         if(parameters.DoctorFirstName is not null)
             entities = entities.Where(e => e.DoctorFirstName.Contains(parameters.DoctorFirstName));
